@@ -1,17 +1,26 @@
 const express = require('express');
+const mongoose = require('mongoose');
 const dotenv = require('dotenv');
 const cors = require('cors');
 
-// Load environment variables from .env
+// Load environment variables
 dotenv.config();
 
 const app = express();
 
 // Middleware
-app.use(cors()); // Allow frontend to call backend
-app.use(express.json()); // Parse JSON request bodies
+app.use(cors());
+app.use(express.json());
 
-// Test route to confirm server works
+// Connect to MongoDB
+mongoose.connect(process.env.MONGO_URI, {
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+})
+    .then(() => console.log('MongoDB connected'))
+    .catch(err => console.error('MongoDB connection error:', err));
+
+// Test route
 app.get('/api/test', (req, res) => {
     res.json({ message: 'Backend alive!' });
 });
