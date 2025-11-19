@@ -6,7 +6,7 @@ const userSchema = new mongoose.Schema({
   password: { type: String }, // null if only GitHub login
   githubId: { type: String, unique: true, sparse: true },
   githubUsername: { type: String },
-  githubAccessToken: { type: String }, // needed for PR verification
+  githubAccessToken: { type: String }, // REQUIRED for PR verification
   skills: [{
     language: String,
     frameworks: [String],
