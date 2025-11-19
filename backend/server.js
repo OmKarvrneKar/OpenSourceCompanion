@@ -1,3 +1,4 @@
+// backend/server.js
 const express = require('express');
 const mongoose = require('mongoose');
 const dotenv = require('dotenv');
@@ -17,6 +18,15 @@ app.use(session({ secret: 'temp_secret', resave: false, saveUninitialized: false
 app.use(passport.initialize());
 app.use(passport.session());
 
+// === ROUTES ===
+const profileRoutes = require('./routes/profile');
+app.use('/api/profile', profileRoutes);
+
+// Test route
+app.get('/api/test', (req, res) => {
+    res.json({ message: 'Backend alive!' });
+});
+
 // Connect to MongoDB
 if (process.env.NODE_ENV !== 'test') {
   mongoose.connect(process.env.MONGO_URI, {
@@ -32,11 +42,6 @@ const authRoutes = require('./routes/auth');
 const contribRoutes = require('./routes/contributions');
 app.use('/api/auth', authRoutes);
 app.use('/api/contributions', contribRoutes);
-
-// Test route
-app.get('/api/test', (req, res) => {
-    res.json({ message: 'Backend alive!' });
-});
 
 // Start server
 const PORT = process.env.PORT || 5000;
